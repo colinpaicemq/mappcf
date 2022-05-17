@@ -52,9 +52,7 @@ free(pPValue);
 - value - is the value from the PCF request
 - pWhat - is a pointer to a character representation of the "what" value.  For example "SUB_TYP" (the value "MQIACF_SUB_TYPE" with the prefix removed)
 - pValue - is a pointer to the string representing the value. For example MQSYSP_ALLOC_BLK
-- pPValue - is a pointer to the pValue with the prefix removed (P for Pretty). For example ALLOC_BLK.
-
-MQ functions are used to format these strings is used, so the final string is *Alloc Blk*.
+- pPValue - is a pointer to the prettified with the prefix removed and the string made more usable.  MQ functions are used to format these strings is used, so the final string is *Alloc Blk*.
 
 In the MQMAP list as two specials.
 -  MQMAP(10000,MQCFT_STR), // PCF special  10,000 used for looking up PCF Extended responses.  This returns strings such as MQCFT_RESPONSE, and MQCFT_STRING 
