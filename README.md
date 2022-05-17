@@ -1,7 +1,6 @@
 # mappcf
-This C code maps from PCF numberic values back to character strings.
-For example
-You can get data from PCF,  keyword:value
+This C code maps from PCF numeric values back to character strings.
+For example you can get data from PCF,  type:value
 ```
 3070:b'M801                                     
 1175:10 
@@ -32,21 +31,37 @@ to its MQ provided formatting routines such as MQSUBTYPE_STR(), available in CMQ
 - genmake to make checkMap.c 
 - doPCFValues.h provides C functions to map the numberic values to their strings.
 
-The function getPCFValue() does the work.
+The function getPCFValue() in doPCFValues.h does the work.
+
+## Using it from your C program
 
 ```
 getPCFValue(MQLONG what, 
             MQLONG value, 
             char **pWhat, 
             char **pValue, 
-            char **pPValue)
+            char **pPValue);
+...
+free(pWhat);
+free(pValue);
+free(pPValue);
+
 ```
 
 - What - is the PCF value, such as MQIACF_SUB_TYPE
 - value - is the value from the PCF request
 - pWhat - is a pointer to a character representation of the "what" value.  For example "SUB_TYP" (the value "MQIACF_SUB_TYPE" with the prefix removed)
 - pValue - is a pointer to the string representing the value. For example MQSYSP_ALLOC_BLK
-- pPValue - is a pointer to the pValue with the prefix removed. For example ALLOC_BLK.
+- pPValue - is a pointer to the pValue with the prefix removed (P for Pretty). For example ALLOC_BLK.
+
+MQ functions are used to format these strings is used, so the final string is *Alloc Blk*.
+
+In the MQMAP list as two specials.
+-  MQMAP(10000,MQCFT_STR), // PCF special  10,000 used for looking up PCF Extended responses.  This returns strings such as MQCFT_RESPONSE, and MQCFT_STRING 
+-  MQMAP(10001,MQCMD_STR), // PCF Special 10,001 for looking up PCF command.   This returns strings such as MQCMD_INQUIRE_Q_MGR, and MQCMD_CLEAR_Q 
 
 You need to free the returned strings after use.
+
+
+
 
