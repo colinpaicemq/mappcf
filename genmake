@@ -1,0 +1,29 @@
+# Our first Makefile
+
+LIB = -Lblah
+
+LDFLAGS="-L /opt/mqm/lib64 -Wl,-rpath=/opt/mqm/lib64 -Wl,-rpath=/usr/lib64 -lmqm"
+
+cparms = -Wno-write-strings 
+
+.PHONY: all clean 
+all: main
+# LDIR =../lib 
+
+
+
+main:  checkMap.o # test.o
+
+	gcc -m64 -o checkMap checkMap.o -L/opt/mqm/lib64 -Wl,-rpath=/opt/mqm/lib64 -Wl,-rpath=/usr/lib64  -lmqm
+#	gcc -m64 -o test      test.o -L/opt/mqm/lib64 -Wl,-rpath=/opt/mqm/lib64 -Wl,-rpath=/usr/lib64  -lmqm
+
+
+#	chmod +x mainx 
+
+# use -v for verbose 
+
+%.o: %.c  
+	gcc -m64 -c -o $@   -I'/opt/mqm/inc' -I../inc -I. -trigraphs  $(cparms) $<
+
+clean:
+	rm  *.o 
