@@ -54,9 +54,9 @@ free(pPValue);
 - pValue - is a pointer to the string representing the value. For example MQSYSP_ALLOC_BLK
 - pPValue - is a pointer to the prettified with the prefix removed and the string made more usable.  MQ functions are used to format these strings, so the final string is *Alloc Blk*.
 
-In the MQMAP list as two specials.
--  MQMAP(10000,MQCFT_STR), // PCF special  10,000 used for looking up PCF Extended responses.  This returns strings such as MQCFT_RESPONSE, and MQCFT_STRING 
--  MQMAP(10001,MQCMD_STR), // PCF Special 10,001 for looking up PCF command.   This returns strings such as MQCMD_INQUIRE_Q_MGR, and MQCMD_CLEAR_Q 
+In the MQMAP list are two specials.
+-  *MQMAP(10000,MQCFT_STR), // PCF special  10,000 used for looking up PCF Extended responses*.  This returns strings such as MQCFT_RESPONSE, and MQCFT_STRING 
+-  *MQMAP(10001,MQCMD_STR), // PCF Special 10,001 for looking up PCF command.*   This returns strings such as MQCMD_INQUIRE_Q_MGR, and MQCMD_CLEAR_Q 
 
 You need to free the returned strings after use.
 
