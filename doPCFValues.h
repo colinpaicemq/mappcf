@@ -67,50 +67,49 @@ int binarySearch(doIt arr[], long l, long r, long x)
     // present in array
     return -1;
 }
-
-//   {    1, (pProcess)  MQAT_STR }, // MQIA_APPL_TYPE
+//  Layout of MQMAP is 
+//  MQMAP(MQIACF_PUBSUB_STATUS, MQPS_STR),  //  1311
+//  Where MQIACF_PUBSUB_STATUS is 1311
+//  and MQPS_STR is a function for formatting values
 #define MQMAP(a,b) {a,(pProcess) b }
 doIt DOIT[] =
 {
-//nclude <PCFMapping.h>
-#include <MQMAP.h>
-{99999999, MQTT_STR} // the last one needed for C to compile
+  #include <MQMAP.h>
+  {99999999, MQTT_STR} // the last one needed for C to compile
 };
 
 
 char * getPCFValue(MQLONG what, MQLONG value, char **pWhat, char **pValue, char **pPValue)
 {
- int i;
- char * p;
- /* convert the what type value into a string */
- for (i = 0;i < sizeof(whichFormat)/sizeof(whichFormat[0]);i ++)
- {
-    p =  whichFormat[i](what);
-    if (p != "") break;
- }
- *pWhat = "";
- if (p != "")
- {
-   char * p2 = strdup(p);
-   /* formatConstant makes it pretty and removes the xxx_ from the front */
-   *pWhat = strdup(formatConstant(p2)); /* return the pretty version     */
-   free (p2);
- }
- *pPValue = 0; /* preset this */
- *pValue  = 0; // preset this
-   long lDoIt = sizeof(DOIT)/sizeof(doIt);
-   long rc =  binarySearch(DOIT, 0, lDoIt, what);
-
-
-   if (rc < lDoIt && rc > 0)
-   {
-     *pValue   = strdup((DOIT[rc].routine)(value));
-     char * p2 = strdup(*pValue);
-     /* formatConstant makes it pretty and removes the xxx_ from the front */
-     *pPValue = strdup(formatConstant(p2)); /* return the pretty version     */
-     free (p2);
-     return(NULL  );
-   }
-  return(NULL  ); // element not in array
-
+  int i;
+  char * p;
+  /* convert the what type value into a string */
+  for (i = 0;i < sizeof(whichFormat)/sizeof(whichFormat[0]);i ++) 
+  { 
+     p =  whichFormat[i](what); 
+     if (p != "") break; 
+  } 
+  *pWhat = ""; 
+  if (p != "") 
+  { 
+    //  formatConstant modifies the string, so we need our own r/w copy 
+    char * p2 = strdup(p); 
+    /* formatConstant makes it pretty and removes the xxx_ from the front */ 
+    *pWhat =        formatConstant(p2) ; /* return the pretty version     */ 
+  } 
+  *pPValue = 0; /* preset this */ 
+  *pValue  = 0; // preset this 
+  long lDoIt = sizeof(DOIT)/sizeof(doIt); 
+  long rc =  binarySearch(DOIT, 0, lDoIt, what); 
+                                                                                      
+  if (rc < lDoIt && rc > 0) 
+    { 
+     *pValue   =        (DOIT[rc].routine)(value) ; 
+     //  formatConstant modifies the string, so we need our own r/w copy 
+     char * p2 = strdup(*pValue); 
+     /* formatConstant makes it pretty and removes the xxx_ from the front */ 
+     *pPValue =        formatConstant(p2) ; /* return the pretty version     */ 
+     return(NULL  ); 
+    } 
+  return(NULL  ); // element not in array 
 }
